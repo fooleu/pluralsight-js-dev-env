@@ -1,0 +1,62 @@
+ Javascript development environment setup
+    - Sourece Control
+    - Package Management
+    - Bundling
+    - Minification
+    - Sourecemaps
+    - Transpiling
+    - Dynamic HTML Generation
+    - Centralized HTTP
+    - Mock API framework
+    - Component libraries
+    - Development Webserver
+    - Linting
+    - Automated testing
+    - Continuous Integration
+    - Automated build
+    - Automated deployment
+    - Project structure
+    - Working example app
+
+
+1. Source Control
+Setup github
+- install github
+- signup github
+- create repository by click the "+" (top right)
+- initial the repository for "gitignore for Node" to make sure git ignore "node_modules" folder
+- clone the repository to local machine
+  - click green clone or download button, and copy the url of the repository
+  - open command line, go to directory of the project and run:
+     git clone "github repository url"
+- stage all the files you changed
+  git add .
+- commit your changes locally
+  git commit -m "add new feature"
+- push your work to github
+  git push
+
+2. Editors and configuration
+  Editors selection:
+  - Strong ES2015+ support
+    - autocompletion
+    - parse ES6 imports
+    - report unused imports
+    - Automated refactoring
+  - framework intelligence
+  - built-in terminal
+
+  <> Atom
+  <> WebStorm
+  <> Brackets
+  <> VSCode
+
+  Editor configuration
+  - create .editorconfig file and place in the project root directory
+  - go to editorconfig.org -> download to download a plugin for your choosing editor
+  - copy the command and past to editor command line ( ctr-p ), click install and enable
+
+
+
+
+
