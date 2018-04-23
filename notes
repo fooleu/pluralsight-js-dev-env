@@ -352,7 +352,9 @@ Setup github
     - travis-ci.org
       signup use github account
       turn on the selected github project
-      create configuration file for travis
+      create configuration file .travis.yml for travis in root directory
+      after push changes to github, travis build started
+
 
 
 
