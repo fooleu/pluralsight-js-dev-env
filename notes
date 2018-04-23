@@ -56,6 +56,301 @@ Setup github
   - go to editorconfig.org -> download to download a plugin for your choosing editor
   - copy the command and past to editor command line ( ctr-p ), click install and enable
 
+3. Javascript Package Managers
+  - Bower
+  - npm (has build script, can integrate with bundlers)
+  - JSPM (Javascript Package Management)
+
+  npm
+  - install npm
+  - create package.json file and place it in the project root directory
+  - install the packages
+    - open the terminal
+    - npm install
+      - check if npm config is set to production. If npm config set to production, then npm install will not install devDependencies
+        npm config get production
+        npm config set -g production false
+  - package security
+    - package can be published by anyone, it is necessary to check the packages vulnerabilities
+    - retire.js and node security platform (nsp)
+    - nsp
+      - npm install -g nsp
+      - nsp check
+
+4. Development Webservers
+   - http-server: ultra-simple, signle command serves current directory, requires no configuration
+   - live-server: lightweight, support live-reloading
+   - express: comprehensive, highly configurable, production grade, can run it everywhere
+   - budo: integrates with browserify (bundler), includes hot reloading
+   - webpack dev server: built in to webpack, serves from memory, includes hot reloading
+   - browsersync: Dedicated IP for sharing work on LAN, all interactions remain in sync on all browsers(devices), great for cross-device testing, integrates with webpack, browserify, gulp
+
+   express
+     - npm install express --save --dev
+     - config express
+       - create a folder "buildScripts" under project root directory
+       - create a file "srcServer.js" under "buildScripts", and config the developer server in this file
+
+  Sharing work-in-progress
+    - localtunnel:
+      easily share work on your local machine
+      Setup:
+        - npm install localtunnel -g
+        - start your app
+        - lt --port 3000
+    - ngrok
+      secure tunnel to your local machine
+      - sign up
+      - install ngrok
+      - install authtoken
+      - start your app
+      - ../ngrok http 80
+    - surge
+      quickly host static files to public url
+      - npm install -g surge
+      - surge //run in project directory
+    - now
+      quickly deploy Node.js to the cloud
+      - npm install -g now
+      - create start script
+      - now
+
+    - demo localtunnel
+      - npm install localtunnel -g
+      - node buildScripts/srcServer.js
+      - lt --port 3000
+      - lt --port 3000 --subdomain deliverme
+
+5. Automation
+   Automation options
+   - Grunt
+   - npm
+   - gulp
+
+   npm Automation
+   - in package.json add "scripts" section:
+     {
+       "scripts":{
+         "start": "node buildScripts/srcServer.js"
+       },
+     }
+
+   - npm start
+
+   npm start or npm test does not need "run", other script need npm run lint.
+
+   - pre/post hooks
+     {
+       "scripts":{
+         "prestart": "node buildScripts/startMessage.js",
+         "start": "node buildScripts/srcServer.js"
+       },
+     }
+
+     npm automatically run "pre"+task and "post"+task
+
+   - Concurrent tasks and secquence tasks
+
+   npm-run-all -parallel task1 task2
+   npm-run-all -p task1 task2
+   npm-run-all -s task1 task2
+
+6. Transpiling
+  - transpilers
+    - Babel
+    - TypeScript
+    - Elm
+
+  - Babel configuration styles
+    .babelrc: not npm specific, easier to read since isolated
+    package.json: One less file in your porject
+          {
+            "name": "my-package",
+            "version": "1.0.0",
+            "babel":{
+              //my babel config here
+            }
+          }
+
+    babel experimental presets
+    stage-0 -> stage-4
+
+    Transpile presets
+    preset: babel-preset-es2015-node   //minimum transpile for node, version detection
+            babel-preset-latest-minimal //feature detection
+
+    create .babelrc in project root directory
+    {
+      "presets":[
+        "latest"
+      ]
+    }
+
+    in script, use babel-node instead of node
+
+7. Bundling
+   package projectr into file(s)
+
+   - Module formats
+    - IIFE
+    - AMD
+    - CommonJS
+    - ES6 Module: standardized, statically analyzable, easy to read
+
+   - bundlers
+    requirejs
+    browserify: the first bundler to reach mass adoption, bundle npm packages for the web, large plugin ecosystem
+    webpack: bundles more than just JS, import CSS, images, etc like JS, build in hot-reloading web server
+    rollup: tree shaking (illimates the code not used), faster loading production code, quite new, great for library authors, no hot reloadiing and code splitting
+    JSPM: uses SystemJS, a universal module loader, can load modules at runtime, has its own package manager, can install from npm, git.
+
+   - implement ES6 Modules and bundling use webpack
+     - config webpack: webpack.config.js in root directory
+       - debug: true/false
+       - devtool: 'inline-source-map', ... //source map tools
+       - noInfo: true/false
+       - entry: array of javascript entry points, index.js and middlewares
+       - target: "web", "node", "electron" ...
+       - output: output bundler file location and name, no physical file created, in memory only
+       - plugins: hot reloading, linting ...
+       - module: loaders for different types of files, js, css, image, sass
+
+     - put webpack in use
+       - import webpack and webpack config file to dev server script
+
+       const compiler = webpack(config);
+
+       add compiler as middleware
+
+    - sourcemaps: maps code back to original source, part of our build, downloaded if you open developer tools
+      -   webpack.github.io/docs/configuration#devtool for different sourcemaps
+      -   set debugger use "debugger;"
+
+8. Linting
+   enforce consistency
+   avoid mistakes
+
+   - pick a linter
+     - JSLint
+     - JS Hint
+     - ESLint
+     - TSLint
+
+   - configuring ESLint
+     - config formats
+       separate file: not bound to npm
+       - .eslintrc.js
+       - .eslintrc.yaml
+       - .eslintrc.yml
+       - .eslintrc.json
+       - .eslintrc
+       put in package.json
+       {
+         "eslintConfig":{
+           "plugins": ["example"],
+           "env":{
+
+           }
+         }
+       }
+     - which built-in rules
+
+     - warings or errors
+       - warings: can continue development, can be ignored
+       - errors: breaks the build, can't be ignored
+
+     - which plugins
+      - eslint-plugin-angular
+      - eslint-plugin-react
+      - eslint-plugin-node
+
+     - use preset instead
+
+   - Watching files with ESLint
+     - eslint-loader ( webpack )
+       re-lints all files upon save
+     - eslint-Watch
+       ESLint wrapper that adds file Watch
+       Not tied to webpack
+       better waring/error formatting
+       displays clean message
+       easily lint tests and build scripts too
+       not bound to specific bundler
+
+    - Linting experimental features
+      run eslint directly: supports ES6 and ES7 natively, but does not support experimental features
+
+      - babel-eslint: also lints stage 0 - 4 features
+
+    - create .eslintrc.json file under root directory
+      "env": "browser", "node", "mocha" to set global variable
+      "rules": 0:off, 1:waring, 2:error
+    - config the npm script to run eslint-watch
+      {
+        "scripts":{
+          "lint":"esw webpack.config.* src buildScripts"
+        }
+      }
+      disable any linting build into your editor
+
+    - to disable a specific rule in a specific location
+      /* eslint-disable no-console */
+      //eslint-disable-line no-console
+    - auto run when save:
+      "lint:watch": "npm run lint -- --watch",
+
+9. Testing
+  - Testing framework
+    - Mocha
+    - Jasmine
+    - Tape
+    - AVA
+    - Jest
+
+  - Assertion libraries: declare what you expect
+    expect(2+2).to.equails(4);
+    - Chai
+    - Should.js
+    - expect
+
+  - Helper libraries
+    - JSDOM: simulate the browser's JSDOM, run dom-related tests without a browser
+    - Cheerio: jQuery for the server, query virtual DOM using jQuery selectors
+
+  - where to run tests
+    - browser: Karma, Testem
+    - Headless Browser: browser with no UI, PhantomJS
+    - In-memory DOM: JSDOM
+
+  - where do test files belong
+    - Centralized: less "noise" in src folder, deployment confusion, inertia
+    - Alongside: easy imports, clear visibility, convenient to open, no recreating folder structure, easy file moves
+    - naming test file: fileName.spec.js, fileName.test.js
+
+  - when to run tests: Unit test should run when you hit save
+
+  - Mocha
+    - create testSetup.js
+      - babel-register
+      - exclude css
+    - add test script in package.json
+    - create name.test.js file
+    - watching tests
+      npm run test -- --watch
+
+10. Continuous Integration
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
