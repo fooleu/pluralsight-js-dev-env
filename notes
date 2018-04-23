@@ -339,6 +339,22 @@ Setup github
       npm run test -- --watch
 
 10. Continuous Integration
+    - Run Automated build when commit
+    - Run tests
+    - Check code coverage
+    - Automate deployment
+
+    - Travis CI: linux based integration server
+    - Appveyor: windows based integration server
+    - Jenkins
+
+    Travis CI
+    - travis-ci.org
+      signup use github account
+      turn on the selected github project
+      create configuration file for travis
+
+
 
 
 
